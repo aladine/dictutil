@@ -4,7 +4,7 @@ import (
 	"flag"
 	log "github.com/Sirupsen/logrus"
 	"io/ioutil"
-  "os"
+	"os"
 )
 
 var (
@@ -24,6 +24,9 @@ func GetToken() string {
 	}
 	return string(token)
 }
+
+//func PrepareIndex(base string) {}
+//func Check(word string) {}
 
 func LogInit() {
 	log.SetFormatter(&log.JSONFormatter{})

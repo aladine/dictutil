@@ -1,8 +1,8 @@
-package dictutiltest
+package dictutil
 
-import(
-  "testing"
-  "github.com/aladine/dictutil"
+import (
+	"github.com/aladine/dictutil"
+	"testing"
 )
 
 var datatests = []struct {
@@ -20,7 +20,6 @@ var datatests = []struct {
 	{"show up", "[%-1.2a]"},
 }
 
-
 func TestGetDefinitionFromDb(t *testing.T) {
 	user := telebot.User{
 		ID:        123456,
@@ -35,10 +34,9 @@ func TestGetDefinitionFromDb(t *testing.T) {
 		ID:        -123456,
 		FirstName: "WATO",
 		LastName:  "Tr",
-		Title: "We are the one"
+		Title:     "We are the one",
 	}
 
-	
 	for i := 0; i < datatests; i++ {
 		t.Equal(datatests[i].in, GetDefinitionFromDb(datatests[i].in, "group", group))
 	}
