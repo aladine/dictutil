@@ -1,10 +1,16 @@
 package dictutil
 
 import (
+	"bytes"
+	"encoding/binary"
+	"errors"
 	"flag"
-	log "github.com/Sirupsen/logrus"
+	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
+
+	log "github.com/Sirupsen/logrus"
 )
 
 var (
@@ -21,12 +27,12 @@ type dictionary struct {
 
 func (d *dictionary) PrepareIndex() {
 	// read  dictionary
-	idx_data, err := ioutil.ReadFile(base + ".idx")
+	idx_data, err := ioutil.ReadFile(d.base + ".idx")
 	if err != nil {
 		fmt.Printf("Failed to open the dictionary: %s\n", err.Error())
 	}
 
-	dict_data, err := os.Open(base + ".dict")
+	dict_data, err := os.Open(d.base + ".dict")
 	if err != nil {
 		fmt.Printf("Failed to open the dictionary: %s\n", err.Error())
 	}
