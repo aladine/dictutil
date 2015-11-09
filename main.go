@@ -22,8 +22,12 @@ type dictionary struct {
 	word_idx map[string]string
 }
 
-//Usage:
-// d:= dictionary{base:"",make(map[string]string)}
+func NewDictionary(b string) *dictionary {
+	return &dictionary{
+		base:     b,
+		word_idx: make(map[string]string),
+	}
+}
 
 func (d *dictionary) PrepareIndex() {
 	// read  dictionary
@@ -79,6 +83,10 @@ func (d *dictionary) Check(word string) (string, error) {
 		return "", errors.New("notFound")
 	}
 	return desc, nil
+}
+
+func (d *dictionary) ChangeBase(base string) {
+	d.base = base
 }
 
 func GetNumber(b *bytes.Buffer) (int32, error) {
