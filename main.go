@@ -119,21 +119,21 @@ func LogInit() {
 	log.SetFormatter(&log.JSONFormatter{})
 }
 
-func LogInfo(e string, t int, info interface{}) {
+func LogInfo(e string, t int64, info interface{}) {
 	log.WithFields(log.Fields{
 		"event": e,
 		"user":  t,
 	}).Info(info)
 }
 
-func LogWarn(e string, t int, info interface{}) {
+func LogWarn(e string, t int64, info interface{}) {
 	log.WithFields(log.Fields{
 		"event": e,
 		"user":  t,
 	}).Warn(info)
 }
 
-func LogError(e string, t int, info interface{}) {
+func LogError(e string, t int64, info interface{}) {
 	log.WithFields(log.Fields{
 		"event": e,
 		"user":  t,
