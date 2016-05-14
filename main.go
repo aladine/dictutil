@@ -14,43 +14,43 @@ import (
 )
 
 var (
-	token_file = flag.String("token", "", "File contains token")
+	tokenFile = flag.String("token", "", "File contains token")
 )
 
 type dictionary struct {
-	base     string
-	word_idx map[string]string
+	base    string
+	wordIdx map[string]string
 }
 
 // NewDictionary returns new dictionary
 func NewDictionary(b string) *dictionary {
 	return &dictionary{
-		base:     b,
-		word_idx: make(map[string]string),
+		base:    b,
+		wordIdx: make(map[string]string),
 	}
 }
 
 // PrepareIndex defines a function to index all the links
 func (d *dictionary) PrepareIndex() {
 	// read  dictionary
-	idx_data, err := ioutil.ReadFile(d.base + ".idx")
+	idxData, err := ioutil.ReadFile(d.base + ".idx")
 	if err != nil {
 		fmt.Printf("Failed to open the dictionary: %s\n", err.Error())
 	}
 
-	dict_data, err := os.Open(d.base + ".dict")
+	dictData, err := os.Open(d.base + ".dict")
 	if err != nil {
 		fmt.Printf("Failed to open the dictionary: %s\n", err.Error())
 	}
 
 	// close fi on exit and check for its returned error
 	defer func() {
-		if err := dict_data.Close(); err != nil {
+		if err := dictData.Close(); err != nil {
 			panic(err)
 		}
 	}()
 
-	reader := bytes.NewBuffer(idx_data)
+	reader := bytes.NewBuffer(idxData)
 
 	for {
 		word, err := reader.ReadString('\x00')
@@ -74,14 +74,14 @@ func (d *dictionary) PrepareIndex() {
 
 		// desc
 		desc := make([]byte, length)
-		dict_data.ReadAt(desc, int64(offset))
-		d.word_idx[word] = string(desc)
+		dictData.ReadAt(desc, int64(offset))
+		d.wordIdx[word] = string(desc)
 	}
 }
 
 // Check defines function to check whether word existed
 func (d *dictionary) Check(word string) (string, error) {
-	desc, exists := d.word_idx[word]
+	desc, exists := d.wordIdx[word]
 	if !exists {
 		return "", errors.New("notFound")
 	}
@@ -96,12 +96,12 @@ func (d *dictionary) ChangeBase(base string) {
 // GetNumber is function to get Number
 func GetNumber(b *bytes.Buffer) (int32, error) {
 	var length int32
-	b_length := make([]byte, 4)
-	if n, err := b.Read(b_length); err != nil || n != 4 {
+	bLength := make([]byte, 4)
+	if n, err := b.Read(bLength); err != nil || n != 4 {
 		fmt.Println("length err", n, err)
 		return 0, errors.New("length err")
 	}
-	binary.Read(bytes.NewBuffer(b_length), binary.BigEndian,
+	binary.Read(bytes.NewBuffer(bLength), binary.BigEndian,
 		&length)
 	return length, nil
 }
@@ -109,11 +109,11 @@ func GetNumber(b *bytes.Buffer) (int32, error) {
 // GetToken is function to get token
 func GetToken() string {
 	flag.Parse()
-	if *token_file == "" {
+	if *tokenFile == "" {
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
-	token, err := ioutil.ReadFile(*token_file)
+	token, err := ioutil.ReadFile(*tokenFile)
 	if err != nil {
 		log.Fatal(err)
 		return ""
