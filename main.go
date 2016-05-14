@@ -22,6 +22,7 @@ type dictionary struct {
 	word_idx map[string]string
 }
 
+// NewDictionary returns new dictionary
 func NewDictionary(b string) *dictionary {
 	return &dictionary{
 		base:     b,
@@ -29,6 +30,7 @@ func NewDictionary(b string) *dictionary {
 	}
 }
 
+// PrepareIndex defines a function to index all the links
 func (d *dictionary) PrepareIndex() {
 	// read  dictionary
 	idx_data, err := ioutil.ReadFile(d.base + ".idx")
@@ -77,6 +79,7 @@ func (d *dictionary) PrepareIndex() {
 	}
 }
 
+// Check defines function to check whether word existed
 func (d *dictionary) Check(word string) (string, error) {
 	desc, exists := d.word_idx[word]
 	if !exists {
@@ -85,10 +88,12 @@ func (d *dictionary) Check(word string) (string, error) {
 	return desc, nil
 }
 
+// Change base of folder
 func (d *dictionary) ChangeBase(base string) {
 	d.base = base
 }
 
+// GetNumber is function to get Number
 func GetNumber(b *bytes.Buffer) (int32, error) {
 	var length int32
 	b_length := make([]byte, 4)
@@ -101,6 +106,7 @@ func GetNumber(b *bytes.Buffer) (int32, error) {
 	return length, nil
 }
 
+// GetToken is function to get token
 func GetToken() string {
 	flag.Parse()
 	if *token_file == "" {
@@ -115,10 +121,12 @@ func GetToken() string {
 	return string(token)
 }
 
+// LogInit init logging
 func LogInit() {
 	log.SetFormatter(&log.JSONFormatter{})
 }
 
+// LogInfo defines logging info
 func LogInfo(e string, t int64, info interface{}) {
 	log.WithFields(log.Fields{
 		"event": e,
@@ -126,6 +134,7 @@ func LogInfo(e string, t int64, info interface{}) {
 	}).Info(info)
 }
 
+// LogWarn defines logging warning
 func LogWarn(e string, t int64, info interface{}) {
 	log.WithFields(log.Fields{
 		"event": e,
@@ -133,6 +142,7 @@ func LogWarn(e string, t int64, info interface{}) {
 	}).Warn(info)
 }
 
+// LogError defines logging error
 func LogError(e string, t int64, info interface{}) {
 	log.WithFields(log.Fields{
 		"event": e,
