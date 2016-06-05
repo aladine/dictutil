@@ -206,6 +206,7 @@ func LogError(e string, t int64, info interface{}) {
 	}).Error(info)
 }
 
+// IsGreetingMsg defines whether a string is greeting type msg
 func IsGreetingMsg(str string) (result string, isGreeting bool) {
 	for _, w := range wordsData["words"] {
 		for _, k := range w.Request {
